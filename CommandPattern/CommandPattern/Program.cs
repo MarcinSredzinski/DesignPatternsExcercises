@@ -6,6 +6,8 @@ Console.WriteLine("Hello, World!");
 
 var bankAccount = new BankAccount();
 Console.WriteLine(bankAccount.ToString());
-var command = new BankAccountCommand(bankAccount, BankAccountCommand.Action.Deposit, 100);
+IUndoableCommand command = new BankAccountCommand(bankAccount, BankAccountCommand.Action.Deposit, 100);
 command.Call();
+Console.WriteLine(bankAccount.ToString());
+command.Undo();
 Console.WriteLine(bankAccount.ToString());

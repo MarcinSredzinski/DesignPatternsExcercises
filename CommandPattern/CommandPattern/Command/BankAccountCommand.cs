@@ -1,6 +1,6 @@
 ﻿namespace CommandPattern.Command
 {
-    public class BankAccountCommand : ICommand
+    public class BankAccountCommand :IUndoableCommand
     {
         private BankAccount _account;
         public enum Action
@@ -27,6 +27,22 @@
                     break;
                 case Action.Withdraw:
                     succeeded = _account.Withdraw(_amount);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+        public void Undo()
+        {
+            if (!succeeded) return;
+
+            switch (_action)
+            {
+                case Action.Deposit:
+                    succeeded = _account.Withdraw(_amount);
+                    break;
+                case Action.Withdraw:
+                    _account.Deposit(_amount);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
